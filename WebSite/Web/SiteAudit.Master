@@ -1,0 +1,559 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SiteAudit.Master.cs" Inherits="ECS_Web.SiteAuditMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Francia Audit</title>
+
+
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/fontawesome-free/css/all.min.css" />
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/daterangepicker/daterangepicker.css" />
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css" />
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css" />
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" />
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" />
+    <!-- Bootstrap4 Duallistbox -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css" />
+    <!-- BS Stepper -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/bs-stepper/css/bs-stepper.min.css" />
+    <!-- dropzonejs -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/dropzone/min/dropzone.min.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/AdminLTE/dist/css/adminlte.min.css" />
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" />
+
+    <!-- Toastr -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/toastr/toastr.min.css" />
+
+    <style>
+        .tpoloading {
+            z-index: 99999999999999;
+            background-image: url("/Images/loading.gif");
+            background-size: 330px 220px;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0%;
+            left: 0%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            height: 6px;
+            background-color: #ECECEC;
+        }
+
+        ::-webkit-scrollbar-track-piece {
+            background-color: #ECECEC;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            box-shadow: 0 2px 1px 0 rgba(0,0,0,.05);
+            background: linear-gradient(to right,rgba(200,200,200,.04)0,rgba(0,0,0,.04)100%),url(../images/scrollbar_thumb_bg.png) no-repeat center #6B6B6B;
+            border-radius: 3px;
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body >
+    <form id="form1" runat="server">
+        <asp:ScriptManager runat="server" AsyncPostBackTimeout="3000" ID="ScriptManager1">
+            <Scripts>
+                <asp:ScriptReference Path="~/Scripts/popup.js" />
+                <asp:ScriptReference Path="~/Scripts/jquery-1.7.1.min.js" />
+            </Scripts>
+        </asp:ScriptManager>
+        <script type="text/javascript" lang="javascript">
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(EndRequestHandler);
+            function EndRequestHandler(sender, args) {
+                try {
+                    if (endRequest != null && typeof (endRequest) == 'function') {
+                        endRequest();
+                        $('.select2').select2()
+                        $('.select2bs4').select2({ theme: 'bootstrap4' })
+                    }
+                }
+                catch (ex) {
+                }
+            }
+        </script>
+        <div class="wrapper">
+            <%--<script>
+
+                let __protocol = document.location.protocol;
+                let __baseUrl = __protocol + '//livechat.fpt.ai/v35/src';
+
+                let prefixNameLiveChat = 'Bot trả lời ứng viên';
+                let objPreDefineLiveChat = {
+                    appCode: 'af2510a5fa92ae56c93458f7ba355f82',
+                    themes: '',
+                    appName: prefixNameLiveChat ? prefixNameLiveChat : 'Live support',
+                    thumb: '',
+                    icon_bot: ''
+                },
+                    appCodeHash = window.location.hash.substr(1);
+                if (appCodeHash.length == 32) {
+                    objPreDefineLiveChat.appCode = appCodeHash;
+                }
+
+                let fpt_ai_livechat_script = document.createElement('script');
+                fpt_ai_livechat_script.id = 'fpt_ai_livechat_script';
+                fpt_ai_livechat_script.src = __baseUrl + '/static/fptai-livechat.js';
+                document.body.appendChild(fpt_ai_livechat_script);
+
+                let fpt_ai_livechat_stylesheet = document.createElement('link');
+                fpt_ai_livechat_stylesheet.id = 'fpt_ai_livechat_script';
+                fpt_ai_livechat_stylesheet.rel = 'stylesheet';
+                fpt_ai_livechat_stylesheet.href = __baseUrl + '/static/fptai-livechat.css';
+                document.body.appendChild(fpt_ai_livechat_stylesheet);
+
+                fpt_ai_livechat_script.onload = function () {
+                    fpt_ai_render_chatbox(objPreDefineLiveChat, __baseUrl, 'livechat.fpt.ai:443');
+                }
+            </script>--%>
+            <!-- Navbar -->
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                <!-- Left navbar links -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href=".#" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+
+                <!-- Right navbar links -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Navbar Search -->
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                            <i class="fas fa-search"></i>
+                        </a>
+                        <div class="navbar-search-block">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Messages Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="far fa-comments"></i>
+                            <span class="badge badge-danger navbar-badge">3</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <a href="#" class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="/AdminLTE/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">Brad Diesel
+                 
+                                            <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                        </h3>
+                                        <p class="text-sm">Call me whenever you can...</p>
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>4 Hours Ago</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="/AdminLTE/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">John Pierce
+                 
+                                            <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                        </h3>
+                                        <p class="text-sm">I got your message bro</p>
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>4 Hours Ago</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="/AdminLTE/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">Nora Silvester
+                 
+                                            <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                        </h3>
+                                        <p class="text-sm">The subject goes here</p>
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>4 Hours Ago</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                        </div>
+                    </li>
+                    <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="far fa-bell"></i>
+                            <span class="badge badge-warning navbar-badge">15</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <span class="dropdown-item dropdown-header">15 Notifications</span>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-envelope mr-2"></i>4 new messages
+           
+                                <span class="float-right text-muted text-sm">3 mins</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-users mr-2"></i>8 friend requests
+           
+                                <span class="float-right text-muted text-sm">12 hours</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-file mr-2"></i>3 new reports
+           
+                                <span class="float-right text-muted text-sm">2 days</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                            <i class="fas fa-th-large"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.navbar -->
+
+            <!-- Main Sidebar Container -->
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+                <!-- Brand Logo -->
+                <a href="#" class="brand-link">
+                    <img src="/AdminLTE/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light" runat="server" id="spName">SyngetaAudit</span>
+                </a>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Sidebar user (optional) -->
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        </div>
+                        <div class="info">
+                            <a href="/Default.aspx" class="d-block">Đăng xuất</a>
+                        </div>
+                    </div>
+                    <!-- Sidebar Menu -->
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+                            <li class="nav-item">
+                                <a href="/DigitalMapAudit" class="nav-link">
+                                    <i class="nav-icon fas fa-map-marker"></i>
+                                    <p>
+                                        Digital Map
+                                   
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item" >
+                                <a href="/Dashboard/AuditDashboard.aspx" class="nav-link">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Dashboard
+                                   
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item<%=_path.ToLower().Contains("report") ?" menu-open":"" %>">
+                                <a href="#" class="nav-link<%=_path.ToLower().Contains("report") ?" active":"" %>">
+                                    <i class="nav-icon fas fa-database"></i>
+                                    <p>
+                                        Báo cáo thống kê
+                                       
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" >
+                                    <li class="nav-item"  <%= Employee.TypeId ==1 || Employee.TypeId==2 || Employee.TypeId==3 || Employee.TypeId==5?"''": "style='display:none;'"  %>>
+                                        <a href="/Report/WorkResult" class="nav-link<%= _path.ToLower().Contains("workresult") && !_path.ToLower().Contains("workresultguest") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo viếng thăm cửa hàng</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" style="display:none;"  <%= Employee.TypeId ==1 || Employee.TypeId!=2 || Employee.TypeId!=3?"''": "style='display:none;'"  %>>
+                                        <a href="/Report/WorkResultGuest" class="nav-link<%=_path.ToLower().Contains("workresultguest") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo viếng thăm CH Khách Hàng</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li <%= Employee.TypeId ==1 || Employee.TypeId==2?"''": "style='display:none;'"  %> class="nav-item<%=_path.ToLower().Contains("pages") ?" menu-open":"" %>">
+                                <a href="#" class="nav-link<%=_path.ToLower().Contains("pages") ?" active":"" %>">
+                                    <i class="nav-icon fas fa-tools"></i>
+                                    <p>
+                                        Tools
+                                       
+                                        <i class="fas fa-angle-left right"></i>
+                                        <span class="badge badge-info right">7</span>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item" <%= Employee.TypeId ==1?"''": "style='display:none;'"  %> >
+                                        <a href="#" class="nav-link<%=_path.Contains("To") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý sản phẩm</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" <%= Employee.TypeId ==1?"''": "style='display:none;'"  %>>
+                                        <a href="#" class="nav-link<%=_path.Contains("To") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý POSM</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" <%= Employee.TypeId ==1?"''": "style='display:none;'"  %>>
+                                        <a href="/pages/StoreList/" class="nav-link<%=_path.Contains("StoreList") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý cửa hàng</p>
+                                        </a>
+                                    </li>
+                                     <li class="nav-item" <%= Employee.TypeId ==1?"''": "style='display:none;'"  %> >
+                                        <a href="/pages/Employees/" class="nav-link<%= (_path.ToLower().Contains("employees") && !_path.ToLower().Contains("employeeshop")) ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý nhân viên</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" <%= Employee.TypeId ==1?"''": "style='display:none;'"  %>>
+                                        <a href="/pages/ShopByCycle/" class="nav-link<%=_path.ToLower().Contains("shopbycycle") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Đăng ký T/Tin CH theo chu kỳ</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" <%= Employee.TypeId ==1 || Employee.TypeId==2?"''": "style='display:none;'"  %>>
+                                        <a href="/pages/WorkingPlan/" class="nav-link<%=_path.ToLower().Contains("workingplan") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Lịch làm việc</p>
+                                        </a>
+                                    </li>
+                                     <li class="nav-item" <%= Employee.TypeId ==1?"''": "style='display:none;'"  %>>
+                                        <a href="/pages/KPIList" class="nav-link<%=_path.ToLower().Contains("kpilist") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Đăng ký KPI</p>
+                                        </a>
+                                    </li>
+                                     <li class="nav-item" <%= Employee.TypeId ==1?"''": "style='display:none;'"  %>>
+                                        <a href="/pages/ToolsIT" class="nav-link<%=_path.ToLower().Contains("toolit") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Tools IT Support</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </nav>
+                    <!-- /.sidebar-menu -->
+                </div>
+                <!-- /.sidebar -->
+            </aside>
+
+            <!-- Content Wrapper. Contains page content -->
+
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <div class="card card-info" id="div_card_info12" style="margin-bottom: 0px !important;">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <asp:Label Text="" runat="server" ID="Title" /></h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <asp:UpdatePanel runat="server" ID="UpdatePanel1">
+                    <ContentTemplate>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                <asp:UpdateProgress runat="server" ID="UpdateProgress" AssociatedUpdatePanelID="UpdatePanel1">
+                    <ProgressTemplate>
+                        <div class="tpoloading"></div>
+                    </ProgressTemplate>
+                </asp:UpdateProgress>
+            </div>
+            <!-- /.content-wrapper -->
+            <footer class="main-footer">
+                <div class="float-right d-none d-sm-block">
+                    <b>Version</b> 3.1.0
+   
+                </div>
+                <strong>Copyright &copy; 2021 <a href="#">Ecosystem</a>.</strong> All rights reserved.
+            </footer>
+
+            <!-- Control Sidebar -->
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Control sidebar content goes here -->
+            </aside>
+            <!-- /.control-sidebar -->
+        </div>
+        <!-- ./wrapper -->
+
+        <!-- jQuery -->
+        <script src="/AdminLTE/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Select2 -->
+        <script src="/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+        <!-- Bootstrap4 Duallistbox -->
+        <script src="/AdminLTE/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+        <!-- InputMask -->
+        <script src="/AdminLTE/plugins/moment/moment.min.js"></script>
+        <script src="/AdminLTE/plugins/inputmask/jquery.inputmask.min.js"></script>
+        <!-- date-range-picker -->
+        <script src="/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+        <!-- bootstrap color picker -->
+        <script src="/AdminLTE/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="/AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Bootstrap Switch -->
+        <script src="/AdminLTE/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+        <!-- BS-Stepper -->
+        <script src="/AdminLTE/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+        <!-- dropzonejs -->
+        <script src="/AdminLTE/plugins/dropzone/min/dropzone.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="/AdminLTE/dist/js/adminlte.min.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="/AdminLTE/dist/js/demo.js"></script>
+
+        <!-- Toastr -->
+        <script src="/AdminLTE/plugins/toastr/toastr.min.js"></script>
+
+        <!-- Page specific script -->
+        <script>
+            $(function () {
+                $('[data-widget="pushmenu"]').PushMenu('toggle');
+                init_ajax();
+            });
+            function init_ajax() {
+               
+
+                //Initialize Select2 Elements
+                $('.select2').select2()
+
+                //Initialize Select2 Elements
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                });
+
+                //Date picker
+                $('#reservationdate').datetimepicker({
+                    format: 'DD/MM/YYYY'
+                });
+                //Date picker
+                $('#reservationdate1').datetimepicker({
+                    format: 'DD/MM/YYYY'
+                });
+            }
+            var requestManager = Sys.WebForms.PageRequestManager.getInstance();
+            requestManager.add_endRequest(function () {
+                init_ajax();
+            });
+        </script>
+        <script>
+            Upfile = function () {
+                var fileExtension = ['xls', 'xlsx'];
+                if ($.inArray($('#fileImport').val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                    alert("Only formats are allowed : " + fileExtension.join(', '));
+                    $('#fileImport').val('');
+                    //$('.FileContent').html('');
+                }
+                else {
+                    var formData = new FormData();
+                    var files = document.getElementById("fileImport");
+                    var totalFiles = files.files.length;
+                    if (totalFiles < 1) {
+                        alert("Chọn template để import");
+                        //return false;
+                    }
+                    var file = files.files[0];
+                    formData.append("FileUpload", file);
+                    $.ajax({
+                        type: "POST",
+                        url: '/pages/SaveTempExcel.ashx',
+                        data: formData,
+                        dataType: 'text',
+                        contentType: false,
+                        processData: false,
+                        success: function (Data) {
+                            //alert(Data);
+                            //$('span.FileContent').html(Data);SSSSSSSSSSSSSSSSSSSS
+                            // alert('Upload file successfully.');
+                        },
+                        error: function (error) {
+                            alert("error");
+                            $('#fileImport').val('');
+                        }
+                    });
+                }
+            }
+        </script>
+    </form>
+</body>
+</html>

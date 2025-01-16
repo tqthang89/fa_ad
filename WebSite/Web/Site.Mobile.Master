@@ -1,0 +1,568 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Mobile.master.cs" Inherits="ECS_Web.Site_Mobile" %>
+
+<%--<%@ Register Src="~/ViewSwitcher.ascx" TagPrefix="friendlyUrls" TagName="ViewSwitcher" %>--%>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <%--<meta name="viewport" content="width=device-width" />
+    <title></title>
+    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />--%>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ecosystem | General Form Elements</title>
+
+
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/daterangepicker/daterangepicker.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- Bootstrap4 Duallistbox -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    <!-- BS Stepper -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/bs-stepper/css/bs-stepper.min.css">
+    <!-- dropzonejs -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/dropzone/min/dropzone.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/AdminLTE/dist/css/adminlte.min.css">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+    <!-- Toastr -->
+    <link rel="stylesheet" href="/AdminLTE/plugins/toastr/toastr.min.css">
+
+    <style>
+        .tpoloading {
+            z-index: 99999999999999;
+            background-image: url("/Images/loading.gif");
+            background-size: 330px 220px;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0%;
+            left: 0%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            height: 6px;
+            background-color: #ECECEC;
+        }
+
+        ::-webkit-scrollbar-track-piece {
+            background-color: #ECECEC;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            box-shadow: 0 2px 1px 0 rgba(0,0,0,.05);
+            background: linear-gradient(to right,rgba(200,200,200,.04)0,rgba(0,0,0,.04)100%),url(../images/scrollbar_thumb_bg.png) no-repeat center #6B6B6B;
+            border-radius: 3px;
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <%--<form id="form1" runat="server">
+    <div>
+        <h1>Mobile Master Page</h1>
+        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
+        <section class="content-wrapper main-content clear-fix">
+            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+        </section>
+        <friendlyUrls:ViewSwitcher runat="server" />
+    </div>
+    </form>--%>
+    <form id="form1" runat="server">
+        <asp:ScriptManager runat="server" AsyncPostBackTimeout="3000" ID="ScriptManager1"></asp:ScriptManager>
+        <script type="text/javascript" language="javascript">
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(EndRequestHandler);
+            function EndRequestHandler(sender, args) {
+                try {
+                    if (endRequest != null && typeof (endRequest) == 'function') {
+                        endRequest();
+                        $('.select2').select2()
+                        $('.select2bs4').select2({ theme: 'bootstrap4' })
+                    }
+                }
+                catch (ex) {
+                }
+            }
+        </script>
+        <div class="wrapper">
+            <!-- Navbar -->
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                <!-- Left navbar links -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href=".#" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="#" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+
+                <!-- Right navbar links -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Navbar Search -->
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                            <i class="fas fa-search"></i>
+                        </a>
+                        <div class="navbar-search-block">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Messages Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="far fa-comments"></i>
+                            <span class="badge badge-danger navbar-badge">3</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <a href="#" class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="/AdminLTE/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">Brad Diesel
+                 
+                                            <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
+                                        </h3>
+                                        <p class="text-sm">Call me whenever you can...</p>
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>4 Hours Ago</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="/AdminLTE/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">John Pierce
+                 
+                                            <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
+                                        </h3>
+                                        <p class="text-sm">I got your message bro</p>
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>4 Hours Ago</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <!-- Message Start -->
+                                <div class="media">
+                                    <img src="/AdminLTE/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                    <div class="media-body">
+                                        <h3 class="dropdown-item-title">Nora Silvester
+                 
+                                            <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
+                                        </h3>
+                                        <p class="text-sm">The subject goes here</p>
+                                        <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>4 Hours Ago</p>
+                                    </div>
+                                </div>
+                                <!-- Message End -->
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                        </div>
+                    </li>
+                    <!-- Notifications Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="far fa-bell"></i>
+                            <span class="badge badge-warning navbar-badge">15</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <span class="dropdown-item dropdown-header">15 Notifications</span>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-envelope mr-2"></i>4 new messages
+           
+                                <span class="float-right text-muted text-sm">3 mins</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-users mr-2"></i>8 friend requests
+           
+                                <span class="float-right text-muted text-sm">12 hours</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-file mr-2"></i>3 new reports
+           
+                                <span class="float-right text-muted text-sm">2 days</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                            <i class="fas fa-th-large"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.navbar -->
+
+            <!-- Main Sidebar Container -->
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+                <!-- Brand Logo -->
+                <a href="#" class="brand-link">
+                    <img src="/AdminLTE/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">Ecosystem</span>
+                </a>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Sidebar user (optional) -->
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <img src="/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        </div>
+                        <div class="info">
+                            <a href="#" class="d-block">Ecosystem</a>
+                        </div>
+                    </div>
+                    <!-- Sidebar Menu -->
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                            <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+                            <li class="nav-item">
+                                <a href="/DigitalMap" class="nav-link">
+                                    <i class="nav-icon fas fa-map-marker"></i>
+                                    <p>
+                                        Digital Map
+                                   
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item<%=_path.Contains("Dashboard") ?" menu-open":"" %>">
+                                <a href="#" class="nav-link<%=_path.Contains("Dashboard") ?" active":"" %>">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Dashboard
+                                       
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/Dashboard/Dashboard.aspx" class="nav-link<%=_path.Contains("Dashboard") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Tổng hợp</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Dashboard/Dashboard2.aspx" class="nav-link<%=_path.Contains("Dashboard2") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Chấm công</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Dashboard/Dashboard3.aspx" class="nav-link<%=_path.Contains("Dashboard3") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Doanh số</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Dashboard/Dashboard3.aspx" class="nav-link<%=_path.Contains("Dashboard3") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Hết hàng</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Dashboard/Dashboard3.aspx" class="nav-link<%=_path.Contains("Dashboard3") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Thị phần trưng bày</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Dashboard/Dashboard3.aspx" class="nav-link<%=_path.Contains("Dashboard3") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Tồn kho</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Dashboard/Dashboard3.aspx" class="nav-link<%=_path.Contains("Dashboard3") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>OffLocation</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Dashboard/Dashboard3.aspx" class="nav-link<%=_path.Contains("Dashboard3") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Tuân thủ trưng bày</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Dashboard/Dashboard3.aspx" class="nav-link<%=_path.Contains("Dashboard3") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Lịch làm việc</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-database"></i>
+                                    <p>
+                                        Báo cáo thống kê
+                                       
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="/Report/SellOut" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo bán hàng ( Sales GT)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Report/SaleMT" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo viếng thăm cửa hàng (Sale MT)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Report/AuditMer" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo viếng thăm cửa hàng (Audit - Mer)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="/Report/Redemption" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo đổi quà</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo Training</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo Coaching</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo đơn hàng (B2C)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Báo cáo tài sản</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item<%=_path.Contains("user") ?" menu-open":"" %>">
+                                <a href="#" class="nav-link<%=_path.Contains("user") ?" active":"" %>">
+                                    <i class="nav-icon fas fa-tools"></i>
+                                    <p>
+                                        System
+                                       
+                                        <i class="fas fa-angle-left right"></i>
+                                        <span class="badge badge-info right">7</span>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link<%=_path.Contains("To") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý sản phẩm</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link<%=_path.Contains("To") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý POSM</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link<%=_path.Contains("To") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý CTKM</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link<%=_path.Contains("To") ?" active":"" %>" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý cửa hàng</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý nhân viên</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý KPI by CH</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link" style="padding-left: 25px;">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Quản lý bài học, bài thi</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </nav>
+                    <!-- /.sidebar-menu -->
+                </div>
+                <!-- /.sidebar -->
+            </aside>
+
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <asp:UpdatePanel runat="server" ID="UpdatePanel1">
+                    <ContentTemplate>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                <asp:UpdateProgress runat="server" ID="UpdateProgress" AssociatedUpdatePanelID="UpdatePanel1">
+                    <ProgressTemplate>
+                        <div class="tpoloading"></div>
+                    </ProgressTemplate>
+                </asp:UpdateProgress>
+            </div>
+            <!-- /.content-wrapper -->
+            <footer class="main-footer">
+                <div class="float-right d-none d-sm-block">
+                    <b>Version</b> 3.1.0
+   
+                </div>
+                <strong>Copyright &copy; 2021 <a href="#">Ecosystem</a>.</strong> All rights reserved.
+            </footer>
+
+            <!-- Control Sidebar -->
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Control sidebar content goes here -->
+            </aside>
+            <!-- /.control-sidebar -->
+        </div>
+        <!-- ./wrapper -->
+
+        <!-- jQuery -->
+        <script src="/AdminLTE/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Select2 -->
+        <script src="/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+        <!-- Bootstrap4 Duallistbox -->
+        <script src="/AdminLTE/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+        <!-- InputMask -->
+        <script src="/AdminLTE/plugins/moment/moment.min.js"></script>
+        <script src="/AdminLTE/plugins/inputmask/jquery.inputmask.min.js"></script>
+        <!-- date-range-picker -->
+        <script src="/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
+        <!-- bootstrap color picker -->
+        <script src="/AdminLTE/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="/AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Bootstrap Switch -->
+        <script src="/AdminLTE/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+        <!-- BS-Stepper -->
+        <script src="/AdminLTE/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+        <!-- dropzonejs -->
+        <script src="/AdminLTE/plugins/dropzone/min/dropzone.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="/AdminLTE/dist/js/adminlte.min.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="/AdminLTE/dist/js/demo.js"></script>
+
+        <!-- Toastr -->
+        <script src="/AdminLTE/plugins/toastr/toastr.min.js"></script>
+
+        <!-- Page specific script -->
+        <script>
+            $(function () {
+                init_ajax();
+            });
+            function init_ajax() {
+                //Initialize Select2 Elements
+                $('.select2').select2()
+
+                //Initialize Select2 Elements
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                });
+
+                //Date picker
+                $('#reservationdate').datetimepicker({
+                    format: 'DD/MM/YYYY'
+                });
+                //Date picker
+                $('#reservationdate1').datetimepicker({
+                    format: 'DD/MM/YYYY'
+                });
+            }
+            var requestManager = Sys.WebForms.PageRequestManager.getInstance();
+            requestManager.add_endRequest(function () {
+                init_ajax();
+            });
+</script>
+    </form>
+</body>
+</html>

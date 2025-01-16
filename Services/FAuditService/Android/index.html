@@ -1,0 +1,147 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mondelez Audit</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;subset=vietnamese" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <style>
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+        p {
+            margin: 0;
+            margin-bottom: .5rem;
+            padding: 0;
+        }
+
+        .appTitle {
+            color: #299AD4;
+            font-size: 1.2rem;
+            font-weight: 700;
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+        }
+
+        .grey-text {
+            color: #999 !important;
+        }
+
+        .container-fluid {
+            padding: 1rem;
+        }
+
+        .topInfo {
+            background: rgba(240, 240, 240, .5) url('img/bg.png') top right no-repeat;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 94px 70%;
+            grid-gap: 1rem;
+        }
+
+        .versionTitle {
+            display: flex;
+            justify-content: space-between;
+            column-gap: 30px;
+        }
+
+        .version-text {
+            color: #299AD4;
+            background: rgba(41, 154, 212, .1);
+            border-radius: 50px;
+            padding: .3rem 1rem;
+        }
+
+        .date-update {
+            font-size: .75rem;
+            color: #999;
+            margin-top: .5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .borderTitle {
+            position: relative;
+            border-bottom: 5px solid rgba(240, 240, 240, .5);
+            margin-top: 1.5rem;
+            min-width: 100px;
+            max-width: 70%;
+        }
+
+        .btn {
+            border: none;
+            outline: 0;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 30px;
+        }
+
+        .btn-install {
+            color: #fff;
+            width: 79px;
+            height: 30px;
+            background: url('img/btn_install.png') center center no-repeat;
+        }
+
+        .infoDes {
+            border-bottom: 1px solid #f0f0f0;
+            margin-top: 1.2rem;
+            padding: 0 1rem;
+        }
+
+        .ml-2 {
+            margin-left: .5rem;
+        }
+
+        .pt-5 {
+            padding-top: 1.2rem;
+            padding-bottom: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topInfo">
+        <div class="grid-2 container-fluid">
+            <div>
+                <img src="img/logo512.png" height="94">
+            </div>
+            <div>
+                <p class="borderTitle">
+                    <span class="appTitle">MondelezAudit</span>
+                </p>
+                <p class="grey-text">ACACY COMPANY LIMITED</p>
+                <p>
+                    <a class="btn btn-install" href="apk/10.apk">Cài đặt</a>
+                    <span class="ml-2">Version 1.0</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="infoDes">
+
+        <div class="versionTitle">
+            <span class="version-text">Version 1.0</span>
+            <span class="date-update">Ngày cập nhật: 30/03/2020</span>
+        </div>
+        <div class="pt-5">
+            Ứng dụng dành cho dự án Mondelez Audit.
+        </div>
+    </div>
+</body>
+
+</html>
