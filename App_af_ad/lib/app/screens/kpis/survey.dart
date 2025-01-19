@@ -383,7 +383,7 @@ class SurveyState extends State<Survey> {
                                   item.value.maxData < double.parse(content)) {
                                 controller.alert(
                                     content:
-                                        "Vui lòng nhập nhỏ hơn giá trị min ${item.value.maxData}");
+                                        "Vui lòng nhập nhỏ hơn giá trị max ${item.value.maxData}");
                                 item.value.value = null;
                                 await controller
                                     .updateData(work: work, item: item.value)

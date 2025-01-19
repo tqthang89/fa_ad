@@ -288,7 +288,8 @@ namespace FAuditService.BLL
         }
 
         public static int InsertData_CreateShop(string merchantName,string phoneNumber,int? provinceId,int? districtId,int? townId,string addressline,
-            int? areaDisplay,string itemDisplay,string typeDisplay,string revenue,string photo,double? latitude,double? longitude,int EmployeeId)
+            int? areaDisplay,string itemDisplay,string typeDisplay,string revenue,string photo,double? latitude,double? longitude,int EmployeeId,
+            string platform, string version)
         {
 
             try
@@ -311,6 +312,10 @@ namespace FAuditService.BLL
                 command.Parameters.Add(new SqlParameter("@latitude", latitude));
                 command.Parameters.Add(new SqlParameter("@longitude", longitude));
                 command.Parameters.Add(new SqlParameter("@EmployeeId", EmployeeId));
+
+                command.Parameters.Add(new SqlParameter("@platform", platform));
+                command.Parameters.Add(new SqlParameter("@version", version));
+
                 command.CommandTimeout = 60;
                 return DAUltility.Helpers.SqlHelper.excuteSqlCommnd(command, "[dbo].[Mobile.Worked.Insert_CreateShop]");
             }

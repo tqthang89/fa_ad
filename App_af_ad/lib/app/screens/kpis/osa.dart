@@ -257,7 +257,7 @@ class OsaState extends State<Osa> {
                               ),
                             ),
                             Container(
-                              width: !item.value.keyBrand.contains("SURVEY") ?120:240,
+                              width: item.value.keyBrand != null && !item.value.keyBrand.contains("SURVEY") ?120:120,
                               child: Text(
                                 !ExString(item.value.keyBrand)
                                         .isNullOrWhiteSpace()

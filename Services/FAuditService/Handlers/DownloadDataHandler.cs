@@ -20,8 +20,12 @@ namespace FAuditService.Handlers
             try
             {
                 int? version = new FieldRequest("version");
+                string platform = new FieldRequest("platform");
                 int appversion_current = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["appversion"]);
-
+                if(!string.IsNullOrEmpty(platform) && platform.ToLower()=="ios" )
+                {
+                    appversion_current = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["appversionbuild_ios"]);
+                }    
                 if (version != null && version < appversion_current)
                 {
                     return HttpResponseMessage.CreateResponse(System.Net.HttpStatusCode.InternalServerError, "Đã có phiên bản phần mềm "+ appversion_current + " mới, vui lòng cập nhật trước phần mềm trước khi làm việc.");
@@ -88,10 +92,11 @@ namespace FAuditService.Handlers
                                 var file = Context.Request.Files[0];
                                 if (file != null)
                                 {
+                                    String UrlServices = System.Configuration.ConfigurationManager.AppSettings["UrlServices"];
                                     if (File.Exists(Context.Server.MapPath("~/Database/" + Employee.EmployeeId + "_" + DateTime.Now.ToString("yyyyMMdd") + ".db")))
                                         File.Delete(Context.Server.MapPath("~/Database/" + Employee.EmployeeId + "_" + DateTime.Now.ToString("yyyyMMdd") + ".db"));
                                     file.SaveAs(Context.Server.MapPath("~/Database/" + Employee.EmployeeId + "_" + DateTime.Now.ToString("yyyyMMdd") + ".db"));
-                                    string filePath = "http://syngenta.e-technology.vn:4070/Database/" + Employee.EmployeeId + "_" + DateTime.Now.ToString("yyyyMMdd") + ".db";
+                                    string filePath = UrlServices+ "/Database/" + Employee.EmployeeId + "_" + DateTime.Now.ToString("yyyyMMdd") + ".db";
                                     EmployeeController.SaveDBMobile(Employee.EmployeeId, filePath);
                                 }
                             }

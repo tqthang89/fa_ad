@@ -229,7 +229,7 @@
                                 <asp:ListItem Text="Báo cáo chi tiết" Value="6" />
                             </asp:DropDownList>
                         </div>
-                        <div class="col-md-4" id="div_lockwr" runat="server" >
+                        <div class="col-md-4" id="div_lockwr" style="display:none;" runat="server" >
                             <div class="row">
                                 <div class="col-md-4">
                                     <asp:Label runat="server" ID="lbPassKeyWorkId" Visible="false" Text="@Kcul#323@"></asp:Label>
@@ -240,7 +240,7 @@
                                 </div>
                             </div>
                         </div>
-                        <asp:Button ID="btnphoto" Visible="false" CssClass="button button-blue" OnClick="btnphoto_Click" runat="server" Text="Check Photo" />
+                        <asp:Button ID="btnphoto" style="display:none;" Visible="false" CssClass="button button-blue" OnClick="btnphoto_Click" runat="server" Text="Check Photo" />
                         <asp:HyperLink runat="server" Text="Check Photo" ID="hpExport" Visible="false"></asp:HyperLink>
                     </div>
                 </div>
@@ -904,10 +904,10 @@
                                                                                                                     <td><%# Eval("phoneNumber") %></td>
                                                                                                                 </tr>
                                                                                                                 <tr>
-                                                                                                                    <td style="font-weight: bold;">Biển số xe</td>
+                                                                                                                    <td style="font-weight: bold;">Địa chỉ chi tiết</td>
                                                                                                                     <td colspan="3"><%# Eval("addressline") %></td>
                                                                                                                 </tr>
-                                                                                                                <%--<tr>
+                                                                                                                <tr>
                                                                                                                     <td style="font-weight: bold;">Phường/xã</td>
                                                                                                                     <td><%# Eval("town") %></td>
                                                                                                                     <td style="font-weight: bold;">Quận/Huyện</td>
@@ -924,10 +924,10 @@
                                                                                                                     <td><%# Eval("itemDisplay") %></td>
                                                                                                                     <td style="font-weight: bold;">Đăng ký CTTB</td>
                                                                                                                     <td><%# Eval("typeDisplay") %></td>
-                                                                                                                </tr>--%>
+                                                                                                                </tr>
                                                                                                                 <tr>
-                                                                                                                    <%-- <td style="font-weight: bold;">Doanh thu ( triệu)</td>
-                                                                                                                    <td><%# Eval("revenue") %></td>--%>
+                                                                                                                     <td style="font-weight: bold;">Doanh thu ( triệu)</td>
+                                                                                                                    <td><%# Eval("revenue") %></td>
                                                                                                                     <td style="font-weight: bold;">Tọa độ</td>
                                                                                                                     <td><%# Convert.ToString(Eval("latitude")) + " "+ Convert.ToString(Eval("longitude")) %></td>
                                                                                                                 </tr>

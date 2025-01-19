@@ -138,20 +138,20 @@ class CreateShopController extends BaseController {
     try {
       //demo
       String jsonDemo =
-          "[{\"group\":\"Thông tin xe\",\"title\":\"1.Tên chủ xe (*)\",\"type\":\"T\",\"img\":\"0\"}"
-          ",{\"group\":\"Thông tin xe\",\"title\":\"2.Số điện thoại\",\"type\":\"T\",\"img\":\"0\"}"
-          // ",{\"group\":\"Thông tin cửa hàng\",\"title\":\"3.Tỉnh/Thành phố\",\"type\":\"SP\",\"img\":\"0\"}"
-          // ",{\"group\":\"Thông tin cửa hàng\",\"title\":\"4.Quận/Huyện\",\"type\":\"SD\",\"img\":\"0\"}"
+          "[{\"group\":\"Thông tin cửa hàng\",\"title\":\"1.Tên chủ CH (*)\",\"type\":\"T\",\"img\":\"0\"}"
+          ",{\"group\":\"Thông tin cửa hàng\",\"title\":\"2.Số điện thoại\",\"type\":\"T\",\"img\":\"0\"}"
+          ",{\"group\":\"Thông tin cửa hàng\",\"title\":\"3.Tỉnh/Thành phố\",\"type\":\"SP\",\"img\":\"0\"}"
+           ",{\"group\":\"Thông tin cửa hàng\",\"title\":\"4.Quận/Huyện\",\"type\":\"SD\",\"img\":\"0\"}"
           //
-          // ",{\"group\":\"Thông tin cửa hàng\",\"title\":\"5.Phường/Xã\",\"type\":\"ST\",\"img\":\"0\"}"
-          //",{\"group\":\"Thông tin cửa hàng\",\"title\":\"6.Địa chỉ chi tiết\",\"type\":\"T\",\"img\":\"0\"}"
-          ",{\"group\":\"Thông tin xe\",\"title\":\"3.Biển số xe (*)\",\"type\":\"T\",\"img\":\"0\"}"
+           ",{\"group\":\"Thông tin cửa hàng\",\"title\":\"5.Phường/Xã\",\"type\":\"ST\",\"img\":\"0\"}"
+          ",{\"group\":\"Thông tin cửa hàng\",\"title\":\"6.Địa chỉ chi tiết\",\"type\":\"T\",\"img\":\"0\"}"
+          //",{\"group\":\"Thông tin xe\",\"title\":\"3.Biển số xe (*)\",\"type\":\"T\",\"img\":\"0\"}"
 
-          // ",{\"group\":\"Trưng bày\",\"title\":\"7.Diện tích trưng bày\",\"type\":\"SA\",\"img\":\"0\"}"
-          // ",{\"group\":\"Trưng bày\",\"title\":\"8.Mặt hàng trưng bày\",\"type\":\"T\",\"img\":\"0\"}"
-          // ",{\"group\":\"Trưng bày\",\"title\":\"9.Đăng ký CT trưng bày\",\"type\":\"T\",\"img\":\"0\"}"
-          //",{\"group\":\"Doanh thu\",\"title\":\"10.Doanh số ( triệu)\",\"type\":\"T\",\"img\":\"2\"}]";
-          ",{\"group\":\"Hình ảnh\",\"title\":\"4.Hình ảnh\",\"type\":\"T\",\"img\":\"2\"}]";
+          ",{\"group\":\"Trưng bày\",\"title\":\"7.Diện tích trưng bày\",\"type\":\"SA\",\"img\":\"0\"}"
+          ",{\"group\":\"Trưng bày\",\"title\":\"8.Mặt hàng trưng bày\",\"type\":\"T\",\"img\":\"0\"}"
+          ",{\"group\":\"Trưng bày\",\"title\":\"9.Đăng ký CT trưng bày\",\"type\":\"T\",\"img\":\"0\"}"
+          ",{\"group\":\"Doanh thu\",\"title\":\"10.Doanh số ( triệu)\",\"type\":\"T\",\"img\":\"0\"}]";
+          ",{\"group\":\"Hình ảnh\",\"title\":\"11.Hình ảnh\",\"type\":\"T\",\"img\":\"2\"}]";
 
       var json = jsonDecode(jsonDemo);
       List<CreateShopInfo> lstTemp =
@@ -312,7 +312,7 @@ class CreateShopController extends BaseController {
         result.merchantNameController.text = value;
         result.merchantName = value;
       }
-      else if (index == 2) {//else if (index == 5) {
+      else if (index == 5) {
         result.addresslineController = TextEditingController();
         result.addresslineController.text = value;
         result.addressline = value;
@@ -331,13 +331,13 @@ class CreateShopController extends BaseController {
         result.revenue = value;
       }
     }
-    // else if (type == "N") {
-    //   if (index == 1) {
-    //     result.phoneController = TextEditingController();
-    //     result.phoneController.text = nvalue.toString();
-    //     result.phoneNumber = nvalue;
-    //   }
-    // }
+    else if (type == "N") {
+      if (index == 1) {
+        result.phoneController = TextEditingController();
+        result.phoneController.text = nvalue.toString();
+        result.phoneNumber = nvalue.toString();
+      }
+    }
     else if (type == "SP") {
       if (index == 2) {
         result.provinceId = svalue;
@@ -366,18 +366,18 @@ class CreateShopController extends BaseController {
     //tempResult.statusCode =200;
     //tempResult.content = "test111";
     //return tempResult;
-    result.provinceId = result.districtId = result.townId = 0;
-    result.areaDisplay = 0;result.itemDisplay = "empy";result.areaDisplay = 0;
-    result.revenue ="empty";result.typeDisplay = "empty";
+    //result.provinceId = result.districtId = result.townId = 0;
+    //result.areaDisplay = 0;result.itemDisplay = "empy";result.areaDisplay = 0;
+    //result.revenue ="empty";result.typeDisplay = "empty";
     if (result == null) {
       return new HttpResponseMessage(statusCode: 500,content: "Thiếu object");
     }
     if (ExString(result.merchantName.toString()).isNullOrWhiteSpace()) {
-      return new HttpResponseMessage(statusCode: 500,content: "Chưa nhập tên chủ xe");
+      return new HttpResponseMessage(statusCode: 500,content: "Chưa nhập tên CH");
     }
-    // if (ExString(result.phoneNumber.toString()).isNullOrWhiteSpace()) {
-    //   return new HttpResponseMessage(statusCode: 500,content: "Chưa nhập số điện thoại");
-    // }
+    if (ExString(result.phoneNumber.toString()).isNullOrWhiteSpace()) {
+      return new HttpResponseMessage(statusCode: 500,content: "Chưa nhập số điện thoại");
+    }
     if (ExString(result.provinceId.toString()).isNullOrWhiteSpace()) {
       return new HttpResponseMessage(statusCode: 500,content: "Thiếu tỉnh/thành phố");
     }
@@ -388,7 +388,7 @@ class CreateShopController extends BaseController {
       return new HttpResponseMessage(statusCode: 500,content: "Thiếu phường/xã");
     }
     if (ExString(result.addressline.toString()).isNullOrWhiteSpace()) {
-      return new HttpResponseMessage(statusCode: 500,content: "Thiếu biển số xe");
+      return new HttpResponseMessage(statusCode: 500,content: "Thiếu địa chỉ chi tiết");
     }
     if (ExString(result.areaDisplay.toString()).isNullOrWhiteSpace()) {
       return new HttpResponseMessage(statusCode: 500,content: "Thiếu diện tích TB");

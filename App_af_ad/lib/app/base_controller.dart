@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:io' as Io;
 import 'dart:typed_data';
@@ -129,6 +130,40 @@ abstract class BaseController extends FullLifeCycleController with StateMixin {
                 Get.back();
               },
         onCancel: onCancel);
+  }
+
+  Future<void> showConfirmDialog(
+      BuildContext context,
+      String title,
+      String content,
+      Function onConfirm,
+      Function onCancel,
+      ) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                onCancel(); // Xử lý khi nhấn nút Cancel
+                Navigator.of(context).pop(); // Đóng hộp thoại
+              },
+              child: Text('Bỏ qua'),
+            ),
+            TextButton(
+              onPressed: () {
+                onConfirm(); // Xử lý khi nhấn nút Confirm
+                Navigator.of(context).pop(); // Đóng hộp thoại
+              },
+              child: Text('Xác nhận'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   confirmOK(String content, Function functionOk) async {
@@ -324,6 +359,10 @@ abstract class BaseController extends FullLifeCycleController with StateMixin {
       param["latitude"] = result.latitude.toString();
       param["longitude"] = result.longitude.toString();
       param["photo"] = result.photo;
+
+      print(json.encode(result));
+      //return HttpResponseMessage(statusCode: 500, content: "Vui lòng kiểm tra lại kết nối Internet !");
+
       if (await Utility.isInternetConnected()) {
         response = await HttpUtils.post(
             body: param, url: Urls.UPLOAD);

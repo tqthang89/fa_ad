@@ -65,7 +65,7 @@ class ShopDetailState extends State<ShopDetail> {
           child: Column(
         children: [
           Container(
-            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             width: size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -138,7 +138,7 @@ class ShopDetailState extends State<ShopDetail> {
           ),
           Divider(color: Colors.grey),
           Container(
-            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             width: size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,7 +167,7 @@ class ShopDetailState extends State<ShopDetail> {
           ),
           Divider(color: Colors.grey),
           Container(
-            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             width: size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,8 +192,8 @@ class ShopDetailState extends State<ShopDetail> {
                         InkWell(
                           child: Image.asset(
                             'assets/icons/ic_phone.png',
-                            width: 35,
-                            height: 35,
+                            width: 20,
+                            height: 20,
                           ),
                           onTap: () {
                             callWitiPhoneNumner(shop.phone);
@@ -208,7 +208,7 @@ class ShopDetailState extends State<ShopDetail> {
           ),
           Divider(color: Colors.grey),
           Container(
-            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             width: size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -241,7 +241,7 @@ class ShopDetailState extends State<ShopDetail> {
           ),
           Divider(color: Colors.grey),
           Container(
-            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             width: size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,8 +267,8 @@ class ShopDetailState extends State<ShopDetail> {
                         InkWell(
                           child: Image.asset(
                             'assets/icons/ic_phone.png',
-                            width: 35,
-                            height: 35,
+                            width: 20,
+                            height: 20,
                           ),
                           onTap: () {
                             callWitiPhoneNumner(shop.salesPhone);
@@ -283,7 +283,7 @@ class ShopDetailState extends State<ShopDetail> {
           ),
           Divider(color: Colors.grey),
           Container(
-            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             width: size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -311,7 +311,7 @@ class ShopDetailState extends State<ShopDetail> {
           ),
           Divider(color: Colors.grey),
           Container(
-            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             width: size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -346,9 +346,9 @@ class ShopDetailState extends State<ShopDetail> {
           ),
           InkWell(
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(5),
               width: size.width,
-              height: 200,
+              height: 120,
               child: DottedBorder(
                 color: AppStyle.primary,
                 radius: Radius.circular(20),
@@ -367,7 +367,7 @@ class ShopDetailState extends State<ShopDetail> {
                         height: 50,
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 5,
                       ),
                       Text(
                         'Chụp hình overview',

@@ -8,6 +8,7 @@ import 'package:syngentaaudit/app/core/FileUtils.dart';
 import 'package:syngentaaudit/app/core/Keys.dart';
 import 'package:syngentaaudit/app/core/Shared.dart';
 import 'package:syngentaaudit/app/core/Utility.dart';
+import '../core/Urls.dart';
 import 'TableEntity.dart';
 import 'TableNames.dart';
 
@@ -40,14 +41,14 @@ class DatabaseHelper {
 
     String path = await FileUtils.getExternalStoragePath();
     if (Platform.isAndroid) {
-      path = join(path, Keys.DATA_FOLDER_NAME);
+      path = join(path, Urls.DATA_FOLDER_NAME);
       Directory directory = new Directory(path);
       if (!await directory.exists()) {
         await directory.create(recursive: true);
       }
     }
     String dataPath =
-        join(path,Keys.DATA_FOLDER_NAME +  '_' + user.employeeId.toString() + '.db');
+        join(path,Urls.DATA_FOLDER_NAME +  '_' + user.employeeId.toString() + '.db');
     Database _dbb = await openDatabase(dataPath, version: version, onCreate: _onCreate);
     return _dbb;
   }
@@ -317,13 +318,13 @@ class DatabaseHelper {
     LoginInfo user = await Shared.getUser();
     String path = await FileUtils.getExternalStoragePath();
     if (Platform.isAndroid) {
-      path = join(path, Keys.DATA_FOLDER_NAME);
+      path = join(path, Urls.DATA_FOLDER_NAME);
       Directory directory = new Directory(path);
       if (!await directory.exists()) {
         await directory.create(recursive: true);
       }
     }
-    return join(path, Keys.DATA_FOLDER_NAME + '_' + user.employeeId.toString() + '.db');
+    return join(path, Urls.DATA_FOLDER_NAME + '_' + user.employeeId.toString() + '.db');
   }
 
   openDB() async {
@@ -331,14 +332,14 @@ class DatabaseHelper {
     LoginInfo user = await Shared.getUser();
     String path = await FileUtils.getExternalStoragePath();
     if (Platform.isAndroid) {
-      path = join(path, Keys.DATA_FOLDER_NAME);
+      path = join(path, Urls.DATA_FOLDER_NAME);
       Directory directory = new Directory(path);
       if (!await directory.exists()) {
         await directory.create(recursive: true);
       }
     }
     return await openDatabase(
-        join(path, Keys.DATA_FOLDER_NAME + '_' + user.toString() + '.db'),
+        join(path, Urls.DATA_FOLDER_NAME + '_' + user.toString() + '.db'),
         version: version,
         onCreate: _onCreate);
   }

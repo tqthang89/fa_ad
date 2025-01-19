@@ -58,6 +58,8 @@ class HttpUtils {
     }
     HttpResponseMessage response = new HttpResponseMessage();
     try {
+      print(url);
+      print(body.toString());
       var result = await http
           .post(Uri.parse(url),
               headers: <String, String>{
@@ -160,6 +162,8 @@ class HttpUtils {
       {@required String url,
         @required Map<String, dynamic> body,
         Map<String, List<int> > data}) async {
+    print(url);
+    print(body);
     await getDefaultBody(body: body);
     HttpResponseMessage response = new HttpResponseMessage();
     try {

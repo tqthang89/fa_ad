@@ -49,6 +49,10 @@ class ShopListController extends BaseController {
     Get.toNamed(Routes.MAP,
         arguments: <dynamic>[lstShop], preventDuplicates: false);
   }
+  void toCreateShop() {
+    Get.toNamed(Routes.CREATE,
+        arguments: <dynamic>[lstShop], preventDuplicates: false);
+  }
 
   void onSearchChange(String content) {
     if (timeHandle != null) {

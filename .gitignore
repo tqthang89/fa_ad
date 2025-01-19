@@ -49,3 +49,6 @@ Services/FAuditService.Entities/bin
 Services/FAuditService.Entities/obj
 
 Services/packages
+Services/publish
+WebSite/publish
+WebSite/Web/AdminLTE

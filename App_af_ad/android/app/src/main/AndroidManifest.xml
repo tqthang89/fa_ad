@@ -51,7 +51,7 @@
             android:value="2" />
        <meta-data
            android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyA9vUG0ADC9oG76J4KatxXVT88f4tmqEs4" />
+           android:value="AIzaSyB-YIDl27glPle-dP4N5EDN7O7kB6Vq7m4" />
 
        <receiver android:name="androidx.media.session.MediaButtonReceiver"
            android:exported="false"

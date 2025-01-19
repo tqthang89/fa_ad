@@ -114,15 +114,17 @@ class UploadController extends BaseController {
       alert(content: "Không có dữ liệu cân upload !");
       return;
     }
+    print('-----------1. Start upload');
     if (await Utility.isInternetConnected()) {
       HttpResponseMessage response =
           HttpResponseMessage(statusCode: 202, content: "Start send...");
       if (dataUpload != null && dataUpload.length > 0) {
+        print('-----------dataUpload:' + dataUpload.length.toString());
         try {
           await showProgess();
           for (UploadInfo item in dataUpload) {
             //List<List<int>> arrayData = new List.empty(growable: true);
-
+            print('-----------1.00: startupload shopid:' + item.shopId.toString());
             Map<String, List<int>> arrayData_new = new Map<String, List<int>>();
 
             Map<String, String> body = new Map();
@@ -319,6 +321,8 @@ class UploadController extends BaseController {
             //     body: body,
             //     data: arrayData,
             //     fileKeys: fileKey);
+            print(json.encode(body));
+            print(json.encode(arrayData_new));
             response = await HttpUtils.uploadBytesV2(
                 url: Urls.UPLOAD, body: body, data: arrayData_new);
             // upload file
@@ -424,7 +428,7 @@ class UploadController extends BaseController {
                 await AuditContext.updateWorkResultDone(item.workId);
               }
             } else {
-              alert(content: response.content.toString());
+              alert( content: "Lỗi 1:" +  response.content.toString());
               return;
             }
           }
@@ -432,7 +436,7 @@ class UploadController extends BaseController {
           await init();
         } catch (ex) {
           await hideProgess();
-          alert(content: ex.toString());
+          alert(content: "Lỗi:" +  ex.toString());
           return;
         }
       }

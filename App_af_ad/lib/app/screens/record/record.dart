@@ -46,7 +46,7 @@ class RecordState extends State<Record> {
   @override
   void deactivate() {
     controller.recorder.stopRecorder();
-    controller.player.stop();
+    controller.player.stopPlayer();
     super.deactivate();
   }
 
@@ -167,7 +167,7 @@ class RecordState extends State<Record> {
                         ),
                         onPressed: () => !controller.work.value.locked
                             ? {
-                                controller.stopRecording(),
+                                controller.stopRecording(context),
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
                                   content: Text("Ngưng ghi âm."),

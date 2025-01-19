@@ -21,15 +21,15 @@ class ShopListView extends GetView<ShopListController> {
                   children: [
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.all(10),
+                        margin: EdgeInsets.all(5),
                         child: BaseTextField(
                           borderColor: Colors.grey[300],
                           backgroundColor: const Color(0xFFF3F6FF),
                           controller: controller.searchController,
                           rightIcon: 'assets/icons/ic_search.png',
                           isPassword: false,
-                          radius: 10,
-                          height: 40,
+                          radius: 5,
+                          height: 30,
                           placeHolder: 'Tìm tên cửa hàng...',
                           onChanged: (content) {
                             controller.onSearchChange(content);
@@ -39,9 +39,9 @@ class ShopListView extends GetView<ShopListController> {
                     ),
                     InkWell(
                       child: Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                        width: 35,
-                        height: 35,
+                        margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        width: 30,
+                        height: 30,
                         child: Image.asset(
                           'assets/icons/ic_map.png',
                           color: AppStyle.primary,
@@ -50,6 +50,21 @@ class ShopListView extends GetView<ShopListController> {
                       ),
                       onTap: () {
                         controller.toMap();
+                      },
+                    ),
+                    InkWell(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        width: 30,
+                        height: 30,
+                        child: Icon(
+                          Icons.add,  // Sử dụng icon "add" mặc định của Flutter
+                          color: AppStyle.primary,  // Áp dụng màu sắc chính từ AppStyle
+                          size: 30.0,  // Kích thước của icon, có thể thay đổi theo nhu cầu
+                        ),
+                      ),
+                      onTap: () {
+                        controller.toCreateShop();
                       },
                     )
                   ],

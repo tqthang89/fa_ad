@@ -8,6 +8,7 @@ abstract class Routes {
 
   static const SHOPLISTAPPLE = Paths.SHOPLISTAPPLE;
   static const SHOPAPPLE = Paths.SHOPAPPLE;
+  static const CREATE = Paths.CREATE;
 }
 
 abstract class Paths {

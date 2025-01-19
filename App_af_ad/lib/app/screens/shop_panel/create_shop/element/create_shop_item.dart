@@ -80,7 +80,7 @@ class CreateShopItem extends StatelessWidget {
                     ],
                   ),
                   Visibility(
-                    visible: index == 3 ? true : false,
+                    visible: index == 9 ? true : false,
                     child: Container(
                       height: 140,
                       padding: EdgeInsets.all(5),
@@ -167,7 +167,7 @@ class CreateShopItem extends StatelessWidget {
                   ? controller.result.merchantNameController
                   : index == 1
                   ? controller.result.phoneController
-                  : index == 2 //: index == 5
+                  :  index == 5
                   ? controller.result.addresslineController
                   : index == 7
                   ? controller.result.itemDisplayController

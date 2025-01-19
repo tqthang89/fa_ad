@@ -3,10 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syngentaaudit/app/base/AudioInfo.dart';
 import 'package:syngentaaudit/app/base/ShopInfo.dart';
@@ -15,60 +13,35 @@ import 'package:syngentaaudit/app/context/auditContext.dart';
 import 'package:syngentaaudit/app/core/FileUtils.dart';
 import 'package:syngentaaudit/app/data/DatabaseHelper.dart';
 import 'package:syngentaaudit/app/data/TableNames.dart';
-import 'package:syngentaaudit/app/extensions/ExsString.dart';
 import 'package:syngentaaudit/app/models/WorkResultInfo.dart';
-
-import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart'
-    as fspi;
 
 class RecordController extends BaseController {
   FlutterSoundRecorder recorder;
+  FlutterSoundPlayer player;
   String pathToAudio;
   RxString timeText = "".obs;
-  Track track;
   StreamSubscription recorderSubscription;
   RxList<AudioInfo> lstAudio = <AudioInfo>[].obs;
   DatabaseHelper db = DatabaseHelper();
-  AudioPlayer player = AudioPlayer();
   AudioInfo filePlaying;
+  bool hasResponded = false;  // Biến kiểm tra trạng thái phản hồi
+
   @override
   void onReady() {
-    player.setVolume(100.0);
     super.onReady();
-  }
+    recorder = FlutterSoundRecorder();
+    player = FlutterSoundPlayer();
 
-  Future<void> getWorkResult(ShopInfo shop) async {
-    await AuditContext.getAudit(shop).then((WorkResultInfo value) {
-      if (value == null) {
-        confirm(
-            content: "Lỗi không tìm thấy WorkResult.",
-            onCancel: () {
-              Navigator.of(Get.overlayContext).pop();
-            },
-            onConfirm: backPressed);
-      } else {
-        work.value = value;
-      }
+    // Mở phiên làm việc cho player
+    player.openPlayer().then((_) {
+      print("Player is ready!");
+    }).catchError((e) {
+      print("Error opening player: $e");
     });
+    player.setVolume(1.0);  // Set volume to 100%
   }
 
   Future<void> initRecord(ShopInfo shop) async {
-    recorder = FlutterSoundRecorder();
-    //await getWorkResult(shop);
-    // await recorder.openAudioSession(
-    //     focus: AudioFocus.requestFocusAndStopOthers,
-    //     category: SessionCategory.playAndRecord,
-    //     mode: SessionMode.modeDefault,
-    //     device: AudioDevice.speaker);
-
-    //        Copy UMP ----------------
-    await recorder.openAudioSession(
-        focus: AudioFocus.requestFocusAndDuckOthers,
-        category: SessionCategory.playAndRecord,
-        mode: SessionMode.modeDefault,
-        device: AudioDevice.speaker,
-        audioFlags: outputToSpeaker | allowBlueToothA2DP | allowAirPlay);
-    await recorder.setSubscriptionDuration(Duration(milliseconds: 10));
     await Permission.microphone.request();
     await Permission.storage.request();
     await Permission.manageExternalStorage.request();
@@ -76,36 +49,36 @@ class RecordController extends BaseController {
 
   Future<void> startRecording() async {
     if (!work.value.locked) {
-      if (player.playing) {
-        player.stop();
+      if (player.isPlaying) {
+        await player.stopPlayer();
       }
+
       File file = await FileUtils.createAudio();
       if (file != null) {
         pathToAudio = file.path;
-        track = new Track(trackPath: file.path, codec: Codec.aacMP4);
-        recorder.openAudioSession();
-        await recorder.startRecorder(
-            //toFile: track.trackPath,
-            //codec: Codec.amrNB,
 
-            // --------------- Copy UMP------
-            codec: Codec.aacMP4,
-            numChannels: 1,
-            bitRate: 16000,
-            sampleRate: 16000,
-            toFile: track.trackPath,
-            audioSource: fspi.AudioSource.microphone);
+        // Đảm bảo rằng recorder đã được mở trước khi ghi âm
+        await recorder.openRecorder();
+
+        await recorder.startRecorder(
+          toFile: pathToAudio,
+          codec: Codec.aacMP4,
+          numChannels: 1,
+          bitRate: 16000,
+          sampleRate: 16000,
+        );
+
         recorderSubscription =
-            recorder.onProgress.listen((RecordingDisposition e) {
-          if (e != null) {
-            DateTime date = DateTime.fromMillisecondsSinceEpoch(
-                e.duration.inMilliseconds,
-                isUtc: true);
-            timeText.value = DateFormat('mm:ss:SS', 'en_US').format(date);
-            timeText.substring(0, 8);
-            print(timeText.value);
-          }
-        });
+            recorder.onProgress.listen((e) {
+              if (e != null && e.duration != null) {
+                DateTime date = DateTime.fromMillisecondsSinceEpoch(
+                  e.duration.inMilliseconds,
+                  isUtc: true,
+                );
+                //timeText.value = DateFormat('mm:ss:SS').format(date);
+              }
+            });
+        startTimer();
       } else {
         alert(content: "Tạo file ghi âm không thành công, vui lòng thử lại!");
       }
@@ -114,53 +87,89 @@ class RecordController extends BaseController {
     }
   }
 
-  Future<void> stopRecording() async {
+  Timer _timer;                // Timer để đếm giây
+  int _seconds = 0;                 // Biến lưu trữ số giây đã trôi qua
+
+  void startTimer() {
+    _seconds = 0;  // Reset giây về 0 mỗi khi bắt đầu
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _seconds++;  // Tăng số giây lên mỗi lần đếm
+      int minutes = _seconds ~/ 60;  // Lấy số phút
+      int seconds = _seconds % 60;  // Lấy số giây
+      timeText.value = "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+    });
+  }
+
+  void stopTimer() {
+    _timer.cancel();
+  }
+
+  Future<void> stopRecording(BuildContext context) async {
     if (!work.value.locked) {
       if (recorder.isRecording || recorder.isPaused) {
         try {
-          confirm(
-              content: "Bạn có muốn lưu tệp ghi âm này không ?",
-              onCancel: () async {
-                try {
-                  if (recorder.isRecording || recorder.isPaused) {
-                    recorder.closeAudioSession();
-                    recorderSubscription.cancel();
-                    recorderSubscription = null;
-                    await recorder.stopRecorder();
-                    timeText.value = "";
-                  }
-                  String tempPath = track.trackPath;
-                  if (!ExString(tempPath).isNullOrWhiteSpace()) {
-                    File tempFile = new File(tempPath);
-                    if (tempFile.existsSync()) {
-                      tempFile.deleteSync();
-                    }
-                  }
-                } catch (ex) {
-                  print(ex);
-                }
-              },
-              onConfirm: () async {
-                try {
-                  if (recorder.isRecording || recorder.isPaused) {
-                    recorder.closeAudioSession();
-                    recorderSubscription.cancel();
-                    recorderSubscription = null;
-                    await recorder.stopRecorder();
-                    timeText.value = "";
-                    await saveAudio(track);
-                  }
-                } catch (ex) {
-                  print(ex);
-                }
-                navigator.pop();
-              });
+          if (!hasResponded) {  // Kiểm tra phản hồi chỉ gửi một lần
+            hasResponded = true;
+            // confirm(
+            //     content: "Bạn có muốn lưu tệp ghi âm này không ?",
+            //     onCancel: () async {
+            //       await recorder.stopRecorder();
+            //       await recorder.closeRecorder();  // Đảm bảo recorder được đóng
+            //       recorderSubscription?.cancel();
+            //       recorderSubscription = null;
+            //
+            //       String tempPath = pathToAudio;
+            //       File tempFile = File(tempPath);
+            //       if (tempFile.existsSync()) {
+            //         tempFile.deleteSync();
+            //       }
+            //     },
+            //     onConfirm: () async {
+            //       await recorder.stopRecorder();
+            //       await recorder.closeRecorder();  // Đảm bảo recorder được đóng
+            //       timeText.value = "00:00";
+            //       await saveAudio();
+            //     });
+
+            showConfirmDialog(
+              context,  // context hiện tại
+              'Thông báo',  // Tiêu đề hộp thoại
+              'Bạn có muốn lưu tệp ghi âm này không ?',  // Nội dung
+              onConfirm,  // Callback khi người dùng chọn "Confirm"
+              onCancel,   // Callback khi người dùng chọn "Cancel"
+            );
+          }
         } catch (ex) {
-          recorder.closeAudioSession();
+          print(ex);
           await recorder.stopRecorder();
+          await recorder.closeRecorder();  // Đảm bảo recorder được đóng
         }
       }
-    } else {}
+    }
+  }
+
+  // Hàm xử lý khi người dùng xác nhận
+  void onConfirm() async {
+    stopTimer();
+    await recorder.stopRecorder();
+    await recorder.closeRecorder();  // Đảm bảo recorder được đóng
+    timeText.value = "00:00";
+    await saveAudio();
+  }
+
+  // Hàm xử lý khi người dùng hủy
+  void onCancel() async {
+    stopTimer();
+    await recorder.stopRecorder();
+    await recorder.closeRecorder();  // Đảm bảo recorder được đóng
+    recorderSubscription?.cancel();
+    recorderSubscription = null;
+
+    String tempPath = pathToAudio;
+    File tempFile = File(tempPath);
+    if (tempFile.existsSync()) {
+      tempFile.deleteSync();
+    }
   }
 
   Future<bool> backPressed() async {
@@ -174,24 +183,17 @@ class RecordController extends BaseController {
   }
 
   Future<void> closeAudio() async {
-    await recorder.closeAudioSession();
-    await player.stop();
+    await recorder.stopRecorder();
+    await recorder.closeRecorder();
+    await player.stopPlayer();
+    _timer.cancel();  // Đảm bảo hủy bỏ timer khi widget bị hủy
   }
 
-  Future<void> saveAudio(Track track) async {
-    if (track != null) {
-      AudioInfo audio = new AudioInfo();
-      if (Platform.isAndroid) {
-        audio.audioPath = track.trackPath.split("/").last;
-      } else {
-        audio.audioPath = track.trackPath.split("/").last;
-      }
-      if (Platform.isAndroid) {
-        audio.audioLocal = track.trackPath;
-      } else {
-        audio.audioLocal = track.trackPath.split("/").last;
-      }
-      //audio.audioLocal = track.trackPath;
+  Future<void> saveAudio() async {
+    if (pathToAudio != null) {
+      AudioInfo audio = AudioInfo();
+      audio.audioPath = pathToAudio.split("/").last;  // Chỉ lấy tên file
+      audio.audioLocal = pathToAudio;  // Lưu đường dẫn đầy đủ
       audio.uploaded = 0;
       audio.workId = work.value.rowId;
       await db.insertRow(TableNames.audio, audio);
@@ -206,12 +208,21 @@ class RecordController extends BaseController {
   }
 
   Future<void> play(AudioInfo file) async {
-    if (player.playing == false) {
+    if (player.isPlaying == false) {
       if (file.playing == 0) {
         filePlaying = file;
-        await player.setAudioSource(AudioSource.uri(Uri.file(
-            FileUtils.GetFilePathAudio(DirectoryPath, file.audioLocal,
-                work.value.workDate.toString()))));
+
+        // Sử dụng String thay vì Uri
+        await player.startPlayer(
+            fromURI: FileUtils.GetFilePathAudio(
+                DirectoryPath, file.audioLocal, work.value.workDate.toString()),
+            whenFinished: () {
+              // Khi phát lại hoàn tất
+              file.playing = 0;
+              lstAudio.refresh();
+            }
+        );
+
         file.playing = 1;
         for (AudioInfo item in lstAudio) {
           if (item.audioPath != file.audioPath) {
@@ -219,25 +230,20 @@ class RecordController extends BaseController {
           }
         }
         lstAudio.refresh();
-        await player.play().whenComplete(() => {
-              player.stop(),
-              file.playing = 0,
-              lstAudio.refresh(),
-            });
       } else {
         file.playing = 0;
         lstAudio.refresh();
       }
     } else {
       if (filePlaying.audioPath == file.audioPath) {
-        player.stop();
+        await player.stopPlayer();
         file.playing = 0;
         lstAudio.refresh();
       } else {
         confirm(
-            content: "Đang hát.",
+            content: "Đang phát âm thanh.",
             onConfirm: () {
-              player.stop();
+              player.stopPlayer();
               file.playing = 0;
               lstAudio.refresh();
               Navigator.pop(Get.context);
